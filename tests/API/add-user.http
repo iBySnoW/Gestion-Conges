@@ -1,0 +1,10 @@
+POST http://localhost:8000/user/add
+Content-Type: application/json
+
+{
+  "id": "626e9b71-54f6-44fd-9539-0120cf37daf6",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+###
