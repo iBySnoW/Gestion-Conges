@@ -1,8 +1,10 @@
 <?php
 
+use App\Controller\CongeController;
+use App\Controller\UserController;
+use App\Repository\CongeRepository;
+use App\Repository\UserRepository;
 use App\Router;
-use App\UserController;
-use App\UserRepository;
 use DI\Container;
 use Doctrine\DBAL\DriverManager;
 
@@ -25,6 +27,14 @@ $container->set('UserRepository' , function (Container $c){
 
 $container->set('UserController' , function (Container $c){
     return new UserController($c->get('UserRepository'));
+});
+
+$container->set('CongeRepository' , function (Container $c){
+    return new CongeRepository($c->get('Connection'));
+});
+
+$container->set('CongeController' , function (Container $c){
+    return new CongeController($c->get('CongeRepository'));
 });
 
 $container->set('Router', new Router());

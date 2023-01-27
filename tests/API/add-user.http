@@ -3,8 +3,10 @@ Content-Type: application/json
 
 {
   "id": "626e9b71-54f6-44fd-9539-0120cf37daf6",
-  "firstName": "John",
-  "lastName": "Doe"
+  "firstName": "Corentin",
+  "lastName": "Chatain",
+  "vacationDays": 4,
+  "compensatoryTimeDays" : 3
 }
 
 ###

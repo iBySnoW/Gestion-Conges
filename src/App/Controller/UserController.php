@@ -1,9 +1,12 @@
 <?php
 
 
-namespace App;
+namespace App\Controller;
 
 
+use App\Controller;
+use App\Model\User;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,15 +54,15 @@ class UserController implements Controller
         return new JsonResponse('', Response::HTTP_NO_CONTENT);
     }
 
-    private function userMap(string $json)
+    private function userMap(string $json): User
     {
         $user = json_decode($json);
         return new User(
             $user->id,
             $user->firstName,
             $user->lastName,
+            $user->vacationDays,
+            $user->compensatoryTimeDays
         );
     }
-
-
 }

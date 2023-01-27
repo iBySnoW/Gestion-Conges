@@ -3,6 +3,8 @@
 namespace App;
 
 
+use App\Controller\CongeController;
+use App\Controller\UserController;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

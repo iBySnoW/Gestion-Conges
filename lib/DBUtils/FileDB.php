@@ -3,7 +3,6 @@
 
 namespace DBUtils;
 
-
 class FileDB
 {
     public static function initializeDB(string $filename): void

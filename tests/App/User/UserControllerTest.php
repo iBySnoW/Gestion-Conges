@@ -1,8 +1,11 @@
 <?php
 
-namespace App;
+namespace App\User;
 
 
+use App\Controller\UserController;
+use App\Model\User;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception;
 use PHPUnit\Framework\TestCase;
@@ -19,15 +22,15 @@ class UserControllerTest extends TestCase
     {
         $repository = $this->createMock(UserRepository::class);
         $repository->method('list')->willReturn(new ArrayCollection([
-            new User('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe'),
-            new User('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Jane', 'Doe'),
+            new User('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe', 25, 10),
+            new User('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Jane', 'Doe', 22, 9),
         ]));
         $controller = new UserController($repository);
 
         $response = $controller->list();
 
         self::assertThat($response, self::isInstanceOf(JsonResponse::class));
-        self::assertThat($response->getContent(),self::equalTo('[{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe"},{"id":"35c5382b-04c8-4555-aa5c-d07631ef19b5","firstName":"Jane","lastName":"Doe"}]'));
+        self::assertThat($response->getContent(),self::equalTo('[{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe","vacationDays":25,"compensatoryTimeDays":10},{"id":"35c5382b-04c8-4555-aa5c-d07631ef19b5","firstName":"Jane","lastName":"Doe","vacationDays":22,"compensatoryTimeDays":9}]'));
     }
 
     /**
@@ -37,14 +40,14 @@ class UserControllerTest extends TestCase
     {
         $repository = $this->createMock(UserRepository::class);
         $repository->method('get')->willReturn(
-            new User('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe')
+            new User('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe', 25, 10)
         );
         $controller = new UserController($repository);
 
         $response = $controller->get(1);
 
         self::assertThat($response, self::isInstanceOf(JsonResponse::class));
-        self::assertThat($response->getContent(),self::equalTo('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe"}'));
+        self::assertThat($response->getContent(),self::equalTo('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe","vacationDays":25,"compensatoryTimeDays":10}'));
     }
 
     /**
@@ -55,7 +58,7 @@ class UserControllerTest extends TestCase
         $repository = $this->createMock(UserRepository::class);
         $repository->method('add');
         $request = $this->createMock(Request::class);
-        $request->method('getContent')->willReturn('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe"}');
+        $request->method('getContent')->willReturn('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe", "vacationDays": 25, "compensatoryTimeDays": 10}');
 
         $controller = new UserController($repository);
 
@@ -72,7 +75,7 @@ class UserControllerTest extends TestCase
         $repository = $this->createMock(UserRepository::class);
         $repository->method('add')->willThrowException(new Exception());
         $request = $this->createMock(Request::class);
-        $request->method('getContent')->willReturn('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe"}');
+        $request->method('getContent')->willReturn('{"id":"626e9b71-54f6-44fd-9539-0120cf37daf6","firstName":"John","lastName":"Doe","vacationDays":25,"compensatoryTimeDays":10');
 
         $controller = new UserController($repository);
 

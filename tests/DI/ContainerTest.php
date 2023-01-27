@@ -4,7 +4,7 @@
 namespace DI;
 
 
-use App\UserRepository;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use PHPUnit\Framework\TestCase;

@@ -1,0 +1,11 @@
+POST http://localhost:8000/conge/add
+Content-Type: application/json
+
+{
+  "id": "626e9b71-54f6-44fd-9539-0120cf37daf7",
+  "startDate": "2002-06-10",
+  "endDate": "2002-06-15",
+  "type": "CP"
+}
+
+###

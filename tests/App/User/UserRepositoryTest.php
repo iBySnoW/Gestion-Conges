@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\User;
 
+use App\Model\User;
+use App\Repository\UserRepository;
 use DBUtils\FileDB;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -24,14 +26,14 @@ class UserRepositoryTest extends TestCase
         FileDB::initializeDB($this->container->get('db.file'));
         $this->pdoConnection = DriverManager::getConnection($this->container->get('connection.params'));
         $this->pdoConnection->executeStatement("CREATE TABLE user (
-id VARCHAR(36) PRIMARY KEY, 
-firstname VARCHAR(255) NOT NULL, 
-lastname VARCHAR(255) NOT NULL)");
-
-        $this->pdoConnection->executeStatement("INSERT INTO user (id, firstname, lastname) VALUES ('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe')");
-        $this->pdoConnection->executeStatement("INSERT INTO user (id, firstname, lastname) VALUES ('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Jane', 'Doe')");
+            id VARCHAR(36) PRIMARY KEY, 
+            firstname VARCHAR(255) NOT NULL, 
+            lastname VARCHAR(255) NOT NULL,
+            vacationDays INT NOT NULL, 
+            compensatoryTimeDays INT NOT NULL)");
+        $this->pdoConnection->executeStatement("INSERT INTO user (id, firstname, lastname, vacationDays, compensatoryTimeDays) VALUES ('626e9b71-54f6-44fd-9539-0120cf37daf6', 'John', 'Doe', 25, 10)");
+        $this->pdoConnection->executeStatement("INSERT INTO user (id, firstname, lastname, vacationDays, compensatoryTimeDays) VALUES ('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Jane', 'Doe', 22, 9)");
     }
-
     /**
      * @test
      */
@@ -84,7 +86,7 @@ lastname VARCHAR(255) NOT NULL)");
 
         self::assertThat($affectedRows, self::equalTo(1));
         $records = $this->pdoConnection
-            ->executeQuery("SELECT id, firstname, lastname FROM user")
+            ->executeQuery("SELECT id, firstname, lastname, vacationDays, compensatoryTimeDays FROM user")
             ->fetchAllAssociative();
         self::assertThat($records, self::countOf(1));
     }
@@ -97,7 +99,7 @@ lastname VARCHAR(255) NOT NULL)");
         $repository = new UserRepository($this->container->get('Connection'));
 
         $this->expectException(Exception::class);
-        $repository->add(new User('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Robert', 'Paulson'));
+        $repository->add(new User('35c5382b-04c8-4555-aa5c-d07631ef19b5', 'Robert', 'Paulson', 22, 5));
     }
 
     /**
